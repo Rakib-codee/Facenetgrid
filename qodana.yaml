@@ -1,0 +1,53 @@
+
+---
+
+## 🧩 How It Works
+
+### 1. **Client Side**
+- GUI with 3 buttons:
+  - `Start Camera` – Open webcam preview
+  - `Capture & Match` – Encode current frame, send to server
+  - `Add Face Info` – Add a new person’s face and name to database
+- Sends face encoding via socket to server
+- Receives result (Matched/Unmatched) with name
+- Displays result and timestamp in GUI
+
+### 2. **Server Side**
+- Listens for connections from multiple clients
+- Matches received face encodings against known faces
+- Updates:
+  - Match History Table
+  - Live Log Panel
+  - SQLite Database (name, status, timestamp)
+
+---
+
+## 📽️ Demo Use Cases
+
+| Location         | How FaceNetGrid Helps                           |
+|------------------|--------------------------------------------------|
+| 🏫 Universities   | Monitor students entering from multiple gates   |
+| 🏢 Offices        | Validate employee access at different entrances |
+| ✈️ Airports       | Identity check at distributed security gates    |
+| 🏙️ Smart Cities   | Centralize identity management city-wide        |
+
+---
+
+## 📋 Features
+
+✅ Real-time face match from multiple devices  
+✅ Easy-to-use GUIs for both client and server  
+✅ Scalable – add new clients with no code changes  
+✅ SQLite-based match history logging  
+✅ Local face database with name labeling  
+✅ Clean, readable, and modular Python code
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/FaceNetGrid.git
+cd FaceNetGrid
