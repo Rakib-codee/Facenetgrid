@@ -186,13 +186,18 @@ if mode == "Match Face":
 elif mode == "Add Face Info":
     if st.session_state['admin_authenticated']:
         st.header("➕ Add Face Info")
-        st.info("Take a photo and enter a name to add a new face to the database.")
+        st.info("Upload a photo or use the webcam to add a new face to the database.")
         name = st.text_input("Enter person's name:", help="This will be used as the label for the face.")
-        img_file = st.camera_input("Take a photo to add", help="Click to open your webcam and capture a photo.")
-        if img_file is not None and name:
-            with st.spinner("📝 Processing faces..."):
-                img = Image.open(img_file)
-                img_np = np.array(img)
+        uploaded_file = st.file_uploader("Upload a face photo (JPG/PNG)", type=["jpg", "jpeg", "png"], help="Admin can upload a photo instead of using the webcam.")
+        img_file = st.camera_input("Or take a photo to add", help="Click to open your webcam and capture a photo.")
+        image = None
+        if uploaded_file is not None:
+            image = Image.open(uploaded_file)
+        elif img_file is not None:
+            image = Image.open(img_file)
+        if image and name:
+            with st.spinner("📝 Processing face..."):
+                img_np = np.array(image)
                 rgb_img = img_np[:, :, :3]
                 # --- Performance: Resize for detection ---
                 scale = 0.5 if max(rgb_img.shape[0], rgb_img.shape[1]) > 800 else 1.0
@@ -202,7 +207,7 @@ elif mode == "Add Face Info":
                 num_faces = len(face_encodings)
                 st.info(f"🧑‍🤝‍🧑 {num_faces} face(s) detected.")
                 if num_faces > 1:
-                    st.error("❌ Exactly one face must be visible. Please retake the photo.")
+                    st.error("❌ More than one face detected. Please upload a photo with only one face.")
                 elif num_faces == 1:
                     # Scale back location to original image size
                     (top, right, bottom, left) = face_locations[0]
@@ -218,7 +223,7 @@ elif mode == "Add Face Info":
                     except Exception as e:
                         st.error(f"❌ Failed to add face: {e}")
                 else:
-                    st.error("😕 No face detected. Please try again.")
+                    st.error("😕 No face detected. Please try another photo.")
     else:
         st.warning("🔒 Admin login required to add new faces.")
 

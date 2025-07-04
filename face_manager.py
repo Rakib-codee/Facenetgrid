@@ -54,7 +54,7 @@ class FaceManager:
             print(f"[ERROR] Failed to add face: {e}")
             raise
 
-    def match_face(self, encoding: List[float], tolerance: float = 0.5) -> (str, Optional[float]):
+    def match_face(self, encoding: List[float], tolerance: float = 0.5) -> tuple[str, Optional[float]]:
         """
         Match a face encoding against known faces.
         Returns (name, distance) or ('Unknown', distance) or ('No known faces', None).
